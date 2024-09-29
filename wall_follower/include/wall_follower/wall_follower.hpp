@@ -64,6 +64,7 @@ private:
 	double start_x, start_y;
 	bool near_start; 
 	double scan_data_[12];
+	bool new_scan_data_ = false;
 
 	// ROS timer
 	rclcpp::TimerBase::SharedPtr update_timer_;

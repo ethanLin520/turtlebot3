@@ -120,6 +120,7 @@ void WallFollower::odom_callback(const nav_msgs::msg::Odometry::SharedPtr msg)
 
 void WallFollower::scan_callback(const sensor_msgs::msg::LaserScan::SharedPtr msg)
 {
+	new_scan_data_ = true;
 	uint16_t scan_angle[12] = {0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330};
 
 	double closest = msg->range_max;
@@ -161,6 +162,8 @@ bool pl_near;
 
 void WallFollower::update_callback()
 {
+	if (!new_scan_data_) return;
+	
 	if (near_start) {
         RCLCPP_INFO(this->get_logger(), "Near start detected, stopping the robot.");
         update_cmd_vel(0.0, 0.0);
