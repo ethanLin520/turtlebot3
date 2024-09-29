@@ -110,6 +110,10 @@ void WallFollower::odom_callback(const nav_msgs::msg::Odometry::SharedPtr msg)
 		first = true;
 		start_moving = true;
 	}
+	RCLCPP_INFO(this->get_logger(), "Position (x: %f, y: %f), Orientation (yaw: %f)", 
+            msg->pose.pose.position.x, 
+            msg->pose.pose.position.y, 
+            robot_pose_);
 }
 
 #define BEAM_WIDTH 10
@@ -135,6 +139,8 @@ void WallFollower::scan_callback(const sensor_msgs::msg::LaserScan::SharedPtr ms
 				closest = msg->ranges.at(angle);
 		scan_data_[i] = closest;
 	}
+
+	RCLCPP_INFO(this->get_logger(), "Closest distance in front: %f", scan_data_[0]);
 }
 
 void WallFollower::update_cmd_vel(double linear, double angular)
