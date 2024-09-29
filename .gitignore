@@ -2,9 +2,40 @@ build/
 install/
 log/
 
-wall_follower/CMakeCache.txt
-wall_follower/CMakeFiles/*
-wall_follower/ament_cmake_environment_hooks/local_setup.sh
-wall_follower/ament_cmake_uninstall_target/ament_cmake_uninstall_target.cmake
-wall_follower/cmake_install.cmake
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+CTestConfiguration.ini
+CTestCustom.cmake
+CTestTestfile.cmake
 
+# Ament CMake (ROS 2 specific)
+ament_cmake_package_templates/
+ament_cmake_uninstall_target/
+ament_cmake_core/
+ament_cmake_environment_hooks/
+ament_cmake_export_dependencies/
+ament_cmake_export_include_directories/
+ament_cmake_index/
+
+# Optional: Build directories
+build/
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+CTestConfiguration.ini
+CTestCustom.cmake
+CTestTestfile.cmake
+
+# Ament CMake (ROS 2 specific)
+ament_cmake_package_templates/
+ament_cmake_uninstall_target/
+ament_cmake_core/
+ament_cmake_environment_hooks/
+ament_cmake_export_dependencies/
+ament_cmake_export_include_directories/
+ament_cmake_index/
