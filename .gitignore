@@ -1,0 +1,10 @@
+build/
+install/
+log/
+
+wall_follower/CMakeCache.txt
+wall_follower/CMakeFiles/*
+wall_follower/ament_cmake_environment_hooks/local_setup.sh
+wall_follower/ament_cmake_uninstall_target/ament_cmake_uninstall_target.cmake
+wall_follower/cmake_install.cmake
+
