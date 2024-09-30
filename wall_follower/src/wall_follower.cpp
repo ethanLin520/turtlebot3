@@ -163,7 +163,7 @@ bool pl_near;
 void WallFollower::update_callback()
 {
 	if (!new_scan_data_) return;
-	
+	new_scan_data_ = false;
 	if (near_start) {
         RCLCPP_INFO(this->get_logger(), "Near start detected, stopping the robot.");
         update_cmd_vel(0.0, 0.0);
