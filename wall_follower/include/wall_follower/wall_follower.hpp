@@ -45,7 +45,7 @@
 #define LINEAR_VELOCITY  0.3
 #define ANGULAR_VELOCITY 1.5
 
-#define BASE_FACTOR 0.8
+#define BASE_FACTOR 0.9
 
 class WallFollower : public rclcpp::Node
 {
