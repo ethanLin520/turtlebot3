@@ -173,7 +173,7 @@ void WallFollower::update_callback()
 }
 
 void WallFollower::update_velocity() {
-	double factor = pow(BASE_FACTOR, since_new_start);	// e.g. 0.8 ^ n
+	double factor = pow(BASE_FACTOR, since_new_scan);	// e.g. 0.8 ^ n
 
 	if (near_start) {
         RCLCPP_INFO(this->get_logger(), "Near start detected, stopping the robot.");
