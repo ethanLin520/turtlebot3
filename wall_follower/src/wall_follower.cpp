@@ -144,11 +144,11 @@ void WallFollower::scan_callback(const sensor_msgs::msg::LaserScan::SharedPtr ms
 	RCLCPP_INFO(this->get_logger(), "Closest distance in front: %f", scan_data_[0]);
 }
 
-void WallFollower::update_cmd_vel(double linear, double angular)
+void WallFollower::update_cmd_vel(double linear, double angular, double factor = 1)
 {
 	geometry_msgs::msg::Twist cmd_vel;
-	cmd_vel.linear.x = linear;
-	cmd_vel.angular.z = angular;
+	cmd_vel.linear.x = linear * factor;
+	cmd_vel.angular.z = angular * factor;
 
 	cmd_vel_pub_->publish(cmd_vel);
 }
@@ -162,62 +162,46 @@ bool pl_near;
 
 void WallFollower::update_callback()
 {
-	if (!new_scan_data_) return;
-	new_scan_data_ = false;
+	if (new_scan_data_) {
+		new_scan_data_ = false;
+		since_new_scan = 0;
+	} else {
+		since_new_scan++;
+	}
+
+	update_velocity();
+}
+
+void WallFollower::update_velocity() {
+	double factor = pow(BASE_FACTOR, since_new_start);	// e.g. 0.8 ^ n
+
 	if (near_start) {
         RCLCPP_INFO(this->get_logger(), "Near start detected, stopping the robot.");
-        update_cmd_vel(0.0, 0.0);
+        update_cmd_vel(0.0, 0.0, factor);
     }
     else if (scan_data_[LEFT_FRONT] > 0.9) {
         RCLCPP_INFO(this->get_logger(), "Left front clear, turning left. Linear: 0.2, Angular: 1.5");
-        update_cmd_vel(0.2, 1.5);
+        update_cmd_vel(0.2, 1.5, factor);
     }
     else if (scan_data_[FRONT] < 0.7) {
         RCLCPP_INFO(this->get_logger(), "Obstacle ahead, turning right. Linear: 0.0, Angular: -1.5");
-        update_cmd_vel(0.0, -1.5);
+        update_cmd_vel(0.0, -1.5, factor);
     }
     else if (scan_data_[FRONT_LEFT] < 0.6) {
         RCLCPP_INFO(this->get_logger(), "Front left obstacle, turning right. Linear: 0.3, Angular: -1.5");
-        update_cmd_vel(0.3, -1.5);
+        update_cmd_vel(0.3, -1.5, factor);
     }
     else if (scan_data_[FRONT_RIGHT] < 0.6) {
         RCLCPP_INFO(this->get_logger(), "Front right obstacle, turning left. Linear: 0.3, Angular: 1.5");
-        update_cmd_vel(0.3, 1.5);
+        update_cmd_vel(0.3, 1.5, factor);
     }
     else if (scan_data_[LEFT_FRONT] > 0.6) {
         RCLCPP_INFO(this->get_logger(), "Left front clear, moving forward with slight left turn. Linear: 0.3, Angular: 1.5");
-        update_cmd_vel(0.3, 1.5);
+        update_cmd_vel(0.3, 1.5, factor);
     }
     else {
         RCLCPP_INFO(this->get_logger(), "Path clear, moving forward. Linear: 0.3, Angular: 0.0");
-        update_cmd_vel(0.3, 0.0);
-    }if (near_start) {
-        RCLCPP_INFO(this->get_logger(), "Near start detected, stopping the robot.");
-        update_cmd_vel(0.0, 0.0);
-    }
-    else if (scan_data_[LEFT_FRONT] > 0.9) {
-        RCLCPP_INFO(this->get_logger(), "Left front clear, turning left. Linear: 0.2, Angular: 1.5");
-        update_cmd_vel(0.2, 1.5);
-    }
-    else if (scan_data_[FRONT] < 0.7) {
-        RCLCPP_INFO(this->get_logger(), "Obstacle ahead, turning right. Linear: 0.0, Angular: -1.5");
-        update_cmd_vel(0.0, -1.5);
-    }
-    else if (scan_data_[FRONT_LEFT] < 0.6) {
-        RCLCPP_INFO(this->get_logger(), "Front left obstacle, turning right. Linear: 0.3, Angular: -1.5");
-        update_cmd_vel(0.3, -1.5);
-    }
-    else if (scan_data_[FRONT_RIGHT] < 0.6) {
-        RCLCPP_INFO(this->get_logger(), "Front right obstacle, turning left. Linear: 0.3, Angular: 1.5");
-        update_cmd_vel(0.3, 1.5);
-    }
-    else if (scan_data_[LEFT_FRONT] > 0.6) {
-        RCLCPP_INFO(this->get_logger(), "Left front clear, moving forward with slight left turn. Linear: 0.3, Angular: 1.5");
-        update_cmd_vel(0.3, 1.5);
-    }
-    else {
-        RCLCPP_INFO(this->get_logger(), "Path clear, moving forward. Linear: 0.3, Angular: 0.0");
-        update_cmd_vel(0.3, 0.0);
+        update_cmd_vel(0.3, 0.0, factor);
     }
 }
 

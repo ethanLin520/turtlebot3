@@ -23,6 +23,7 @@
 #include <sensor_msgs/msg/laser_scan.hpp>
 #include <tf2/LinearMath/Matrix3x3.h>
 #include <tf2/LinearMath/Quaternion.h>
+#include "cmath"
 
 
 #define DEG2RAD (M_PI / 180.0)
@@ -44,6 +45,7 @@
 #define LINEAR_VELOCITY  0.3
 #define ANGULAR_VELOCITY 1.5
 
+#define BASE_FACTOR 0.8
 
 class WallFollower : public rclcpp::Node
 {
@@ -65,13 +67,14 @@ private:
 	bool near_start; 
 	double scan_data_[12];
 	bool new_scan_data_ = false;
+	int since_new_scan = 0;
 
 	// ROS timer
 	rclcpp::TimerBase::SharedPtr update_timer_;
 
 	// Function prototypes
 	void update_callback();
-	void update_cmd_vel(double linear, double angular);
+	void update_cmd_vel(double linear, double angular, double factor = 1);
 	void scan_callback(const sensor_msgs::msg::LaserScan::SharedPtr msg);
 	void odom_callback(const nav_msgs::msg::Odometry::SharedPtr msg);
 };
