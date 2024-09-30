@@ -66,6 +66,7 @@ private:
 	double start_x, start_y;
 	bool near_start; 
 	double scan_data_[12];
+	bool initial_scan = false;
 	bool new_scan_data_ = false;
 	int since_new_scan = 0;
 

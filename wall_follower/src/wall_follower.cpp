@@ -120,7 +120,8 @@ void WallFollower::odom_callback(const nav_msgs::msg::Odometry::SharedPtr msg)
 
 void WallFollower::scan_callback(const sensor_msgs::msg::LaserScan::SharedPtr msg)
 {
-	new_scan_data_ = true;
+	if (!initial_scan) initial_scan = true;
+	new_scan_data = true;
 	uint16_t scan_angle[12] = {0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330};
 
 	double closest = msg->range_max;
@@ -162,8 +163,10 @@ bool pl_near;
 
 void WallFollower::update_callback()
 {
-	if (new_scan_data_) {
-		new_scan_data_ = false;
+	if (!initial_scan) return;
+
+	if (new_scan_data) {
+		new_scan_data = false;
 		since_new_scan = 0;
 	} else {
 		since_new_scan++;
