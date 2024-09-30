@@ -144,7 +144,7 @@ void WallFollower::scan_callback(const sensor_msgs::msg::LaserScan::SharedPtr ms
 	RCLCPP_INFO(this->get_logger(), "Closest distance in front: %f", scan_data_[0]);
 }
 
-void WallFollower::update_cmd_vel(double linear, double angular, double factor = 1)
+void WallFollower::update_cmd_vel(double linear, double angular, double factor)
 {
 	geometry_msgs::msg::Twist cmd_vel;
 	cmd_vel.linear.x = linear * factor;
