@@ -58,7 +58,7 @@ WallFollower::WallFollower()
 	/************************************************************
 	** Initialise ROS timers
 	************************************************************/
-	update_timer_ = this->create_wall_timer(100ms, std::bind(&WallFollower::update_callback, this));
+	update_timer_ = this->create_wall_timer(10ms, std::bind(&WallFollower::update_callback, this));
 
 	RCLCPP_INFO(this->get_logger(), "Wall follower node has been initialised");
 }
