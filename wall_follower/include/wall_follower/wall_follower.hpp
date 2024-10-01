@@ -67,7 +67,7 @@ private:
 	bool near_start; 
 	double scan_data_[12];
 	bool initial_scan = false;
-	bool new_scan_data_ = false;
+	bool new_scan_data = false;
 	int since_new_scan = 0;
 
 	// ROS timer
